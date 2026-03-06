@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="theme-color" content="#c2185b"/>
+<meta name="description" content="BloomCycle - Your cycle, your power. Track your period, fertile window and ovulation with ease."/>
+<title>BloomCycle | TeaJay Konsult Ltd.</title>
+<link rel="manifest" href="manifest.json"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+--pink:#e91e8c;
+--pink-light:#f8bbd0;
+--pink-soft:#fce4ec;
+--purple:#7b1fa2;
+--purple-light:#ce93d8;
+--purple-soft:#f3e5f5;
+--lavender:#ede7f6;
+--white:#fff;
+--text:#3d0026;
+--text-soft:#7b3f5e;
+--card:#fff;
+--bg:#fdf6fb;
+--shadow:0 4px 24px rgba(194,24,116,0.10);
+}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:90px;}
+header{background:linear-gradient(135deg,#c2185b,#7b1fa2);color:#fff;padding:18px 20px 14px;text-align:center;box-shadow:0 2px 12px rgba(123,31,162,0.18);}
+header .brand{font-size:12px;letter-spacing:2px;text-transform:uppercase;opacity:.85;font-weight:500;}
+header h1{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;margin:2px 0;}
+header p{font-size:12px;opacity:.8;letter-spacing:1px;}
+.ios-banner{display:none;background:linear-gradient(90deg,#c2185b,#7b1fa2);color:#fff;padding:10px 16px;text-align:center;font-size:13px;align-items:center;justify-content:space-between;}
+.ios-banner button{background:rgba(255,255,255,0.25);border:none;color:#fff;padding:5px 12px;border-radius:20px;font-size:12px;cursor:pointer;}
+.ios-banner .close-ios{background:none;border:none;color:#fff;font-size:18px;cursor:pointer;padding:0 6px;}
+.fab{position:fixed;bottom:90px;right:20px;background:linear-gradient(135deg,#c2185b,#7b1fa2);color:#fff;border:none;border-radius:50px;padding:12px 20px;font-size:13px;font-weight:600;box-shadow:0 4px 20px rgba(194,24,116,0.35);cursor:pointer;z-index:999;display:none;align-items:center;gap:8px;}
+nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #f8bbd0;display:flex;z-index:1000;box-shadow:0 -2px 12px rgba(194,24,116,0.08);}
+nav button{flex:1;padding:10px 4px 8px;border:none;background:none;font-size:10px;color:#b06080;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:color .2s;}
+nav button .icon{font-size:20px;}
+nav button.active{color:#c2185b;font-weight:600;}
+.tab{display:none;padding:16px;}
+.tab.active{display:block;}
+.hero-card{background:linear-gradient(135deg,#c2185b,#7b1fa2);border-radius:20px;color:#fff;padding:24px 20px;margin-bottom:16px;box-shadow:var(--shadow);}
+.hero-card .greeting{font-size:13px;opacity:.85;margin-bottom:4px;}
+.hero-card .main-stat{font-family:'Playfair Display',serif;font-size:42px;font-weight:700;line-height:1;}
+.hero-card .main-label{font-size:13px;opacity:.85;margin-top:2px;margin-bottom:16px;}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.hero-mini{background:rgba(255,255,255,0.18);border-radius:12px;padding:12px;text-align:center;}
+.hero-mini .num{font-size:24px;font-weight:700;}
+.hero-mini .lbl{font-size:11px;opacity:.85;margin-top:2px;}
+.tip-card{background:linear-gradient(135deg,var(--purple-soft),var(--pink-soft));border-radius:16px;padding:16px;margin-bottom:16px;border-left:4px solid var(--purple);}
+.tip-card .tip-label{font-size:11px;font-weight:600;color:var(--purple);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
+.tip-card p{font-size:13px;color:var(--text-soft);line-height:1.6;}
+.card{background:var(--card);border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:var(--shadow);}
+.card h3{font-family:'Playfair Display',serif;font-size:16px;color:var(--text);margin-bottom:12px;}
+.status-row{display:flex;gap:10px;margin-bottom:16px;}
+.status-pill{flex:1;text-align:center;padding:10px 6px;border-radius:12px;font-size:12px;font-weight:600;}
+.status-pill.period{background:#fce4ec;color:#c2185b;}
+.status-pill.fertile{background:#f3e5f5;color:#7b1fa2;}
+.status-pill.ovulation{background:linear-gradient(135deg,#fce4ec,#f3e5f5);color:#7b1fa2;}
+.status-pill .s-val{font-size:18px;font-weight:700;display:block;}
+label{font-size:13px;font-weight:500;color:var(--text-soft);display:block;margin-bottom:5px;}
+input[type=date],select{width:100%;padding:10px 12px;border:1.5px solid #f8bbd0;border-radius:10px;font-size:14px;background:#fff;color:var(--text);margin-bottom:12px;outline:none;}
+input[type=date]:focus,select:focus{border-color:#c2185b;}
+.btn{width:100%;padding:13px;background:linear-gradient(135deg,#c2185b,#7b1fa2);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;margin-top:4px;}
+.btn:active{opacity:.9;}
+.btn-outline{background:transparent;border:2px solid #c2185b;color:#c2185b;width:100%;padding:11px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;margin-top:8px;}
+.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-top:8px;}
+.cal-header{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:4px;}
+.cal-header span{text-align:center;font-size:11px;font-weight:600;color:var(--text-soft);}
+.cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:50%;font-size:12px;font-weight:500;cursor:default;}
+.cal-day.today{border:2px solid #c2185b;color:#c2185b;font-weight:700;}
+.cal-day.period-day{background:#f48fb1;color:#fff;}
+.cal-day.ovulation-day{background:#7b1fa2;color:#fff;}
+.cal-day.fertile-day{background:#ce93d8;color:#fff;}
+.cal-day.empty{background:transparent;}
+.cal-legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;}
+.leg{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-soft);}
+.leg-dot{width:12px;height:12px;border-radius:50%;}
+.history-item{display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--pink-soft);border-radius:12px;margin-bottom:8px;}
+.history-item .h-info{font-size:13px;color:var(--text);}
+.history-item .h-dur{font-size:12px;color:var(--text-soft);margin-top:2px;}
+.history-item .del-btn{background:#ffcdd2;border:none;color:#c62828;border-radius:8px;padding:6px 10px;font-size:12px;cursor:pointer;}
+.setting-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #fce4ec;}
+.setting-row:last-child{border-bottom:none;}
+.setting-row .s-label{font-size:14px;color:var(--text);font-weight:500;}
+.setting-row .s-desc{font-size:11px;color:var(--text-soft);margin-top:2px;}
+.toggle{position:relative;width:44px;height:24px;}
+.toggle input{opacity:0;width:0;height:0;}
+.slider{position:absolute;inset:0;background:#ddd;border-radius:24px;cursor:pointer;transition:.3s;}
+.slider:before{content:'';position:absolute;width:18px;height:18px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.3s;}
+input:checked+.slider{background:linear-gradient(135deg,#c2185b,#7b1fa2);}
+input:checked+.slider:before{transform:translateX(20px);}
+.setting-row select{width:80px;padding:6px;border:1.5px solid #f8bbd0;border-radius:8px;font-size:13px;margin-bottom:0;}
+.share-section{background:linear-gradient(135deg,var(--pink-soft),var(--lavender));border-radius:16px;padding:16px;margin-bottom:14px;}
+.share-section h4{font-size:14px;font-weight:600;color:var(--text);margin-bottom:10px;}
+.share-btns{display:flex;gap:8px;}
+.share-btn{flex:1;padding:10px 6px;border:none;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;color:#fff;}
+.share-btn.wa{background:#25d366;}
+.share-btn.fb{background:#1877f2;}
+.share-btn.xb{background:#000;}
+footer{text-align:center;padding:20px 16px 10px;font-size:12px;color:var(--text-soft);}
+.month-nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.month-nav button{background:none;border:1.5px solid #f8bbd0;border-radius:8px;padding:4px 12px;color:#c2185b;cursor:pointer;font-size:16px;}
+.month-nav span{font-weight:600;color:var(--text);}
+.empty-state{text-align:center;padding:30px 20px;color:var(--text-soft);}
+.empty-state .e-icon{font-size:40px;margin-bottom:10px;}
+.notif-toast{position:fixed;top:20px;left:16px;right:16px;background:linear-gradient(135deg,#c2185b,#7b1fa2);color:#fff;padding:14px 16px;border-radius:14px;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,0.2);display:none;font-size:14px;}
+.notif-toast .n-title{font-weight:700;margin-bottom:2px;}
+</style>
+</head>
+<body>
+
+<div class="ios-banner" id="iosBanner">
+  <span>📲 Add BloomCycle to Home Screen</span>
+  <button onclick="document.getElementById('iosBanner').style.display='none'">Add</button>
+  <button class="close-ios" onclick="document.getElementById('iosBanner').style.display='none'">✕</button>
+</div>
+
+<div class="notif-toast" id="notifToast">
+  <div class="n-title" id="notifTitle"></div>
+  <div id="notifBody"></div>
+</div>
+
+<header>
+  <div class="brand">TeaJay Konsult Ltd.</div>
+  <h1>🌸 BloomCycle</h1>
+  <p>Your cycle, your power</p>
+</header>
+
+<button class="fab" id="installBtn">📲 Install App</button>
+
+<div class="tab active" id="tab-home">
+  <div style="padding:16px;">
+    <div class="hero-card" id="heroCard">
+      <div class="greeting">Hello, Bloom 🌸</div>
+      <div class="main-stat" id="heroStat">--</div>
+      <div class="main-label" id="heroLabel">Log your first period to get started</div>
+      <div class="hero-grid">
+        <div class="hero-mini"><div class="num" id="miniCycleDay">-</div><div class="lbl">Cycle Day</div></div>
+        <div class="hero-mini"><div class="num" id="miniFertile">-</div><div class="lbl">Days to Fertile</div></div>
+        <div class="hero-mini"><div class="num" id="miniOvulation">-</div><div class="lbl">Days to Ovulation</div></div>
+        <div class="hero-mini"><div class="num" id="miniCycleLen">28</div><div class="lbl">Cycle Length</div></div>
+      </div>
+    </div>
+
+    <div class="status-row">
+      <div class="status-pill period"><span class="s-val" id="statusPeriod">-</span>Period</div>
+      <div class="status-pill fertile"><span class="s-val" id="statusFertile">-</span>Fertile</div>
+      <div class="status-pill ovulation"><span class="s-val" id="statusOvulation">-</span>Ovulation</div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-label">💡 Daily Health Tip</div>
+      <p id="dailyTip">Loading tip...</p>
+    </div>
+
+    <div class="share-section">
+      <h4>Share BloomCycle 🌸</h4>
+      <div class="share-btns">
+        <button class="share-btn wa" onclick="shareApp('whatsapp')">WhatsApp</button>
+        <button class="share-btn fb" onclick="shareApp('facebook')">Facebook</button>
+        <button class="share-btn xb" onclick="shareApp('x')">X</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="tab" id="tab-log">
+  <div style="padding:16px;">
+    <div class="card">
+      <h3>🩸 Log Your Period</h3>
+      <label>Period Start Date</label>
+      <input type="date" id="startDate"/>
+      <label>Period End Date</label>
+      <input type="date" id="endDate"/>
+      <button class="btn" onclick="logPeriod()">Save Period</button>
+    </div>
+    <div class="card">
+      <h3>📋 Cycle History</h3>
+      <div id="historyList"><div class="empty-state"><div class="e-icon">🌸</div><p>No periods logged yet</p></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="tab" id="tab-calendar">
+  <div style="padding:16px;">
+    <div class="card">
+      <div class="month-nav">
+        <button onclick="changeMonth(-1)">‹</button>
+        <span id="monthLabel"></span>
+        <button onclick="changeMonth(1)">›</button>
+      </div>
+      <div class="cal-header">
+        <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+      </div>
+      <div class="calendar-grid" id="calendarGrid"></div>
+      <div class="cal-legend">
+        <div class="leg"><div class="leg-dot" style="background:#f48fb1"></div>Period</div>
+        <div class="leg"><div class="leg-dot" style="background:#ce93d8"></div>Fertile</div>
+        <div class="leg"><div class="leg-dot" style="background:#7b1fa2"></div>Ovulation</div>
+        <div class="leg"><div class="leg-dot" style="border:2px solid #c2185b;background:transparent"></div>Today</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="tab" id="tab-settings">
+  <div style="padding:16px;">
+    <div class="card">
+      <h3>⚙️ Cycle Settings</h3>
+      <div class="setting-row">
+        <div><div class="s-label">Cycle Length</div><div class="s-desc">Average days between periods</div></div>
+        <select id="cycleLength" onchange="saveSetting('cycleLength',this.value)">
+          <option value="21">21</option><option value="22">22</option><option value="23">23</option>
+          <option value="24">24</option><option value="25">25</option><option value="26">26</option>
+          <option value="27">27</option><option value="28" selected>28</option><option value="29">29</option>
+          <option value="30">30</option><option value="31">31</option><option value="32">32</option>
+          <option value="33">33</option><option value="34">34</option><option value="35">35</option>
+        </select>
+      </div>
+      <div class="setting-row">
+        <div><div class="s-label">Period Duration</div><div class="s-desc">How many days your period lasts</div></div>
+        <select id="periodDuration" onchange="saveSetting('periodDuration',this.value)">
+          <option value="3">3</option><option value="4">4</option><option value="5" selected>5</option>
+          <option value="6">6</option><option value="7">7</option>
+        </select>
+      </div>
+    </div>
+    <div class="card">
+      <h3>🔔 Notifications</h3>
+      <div class="setting-row">
+        <div><div class="s-label">Period Reminder</div><div class="s-desc">Alert 3 days before your period</div></div>
+        <label class="toggle"><input type="checkbox" id="notifPeriod" checked onchange="saveSetting('notifPeriod',this.checked)"><span class="slider"></span></label>
+      </div>
+      <div class="setting-row">
+        <div><div class="s-label">Fertile Window Alert</div><div class="s-desc">Alert when fertile window starts</div></div>
+        <label class="toggle"><input type="checkbox" id="notifFertile" checked onchange="saveSetting('notifFertile',this.checked)"><span class="slider"></span></label>
+      </div>
+      <div class="setting-row">
+        <div><div class="s-label">Ovulation Alert</div><div class="s-desc">Alert on your ovulation day</div></div>
+        <label class="toggle"><input type="checkbox" id="notifOvulation" checked onchange="saveSetting('notifOvulation',this.checked)"><span class="slider"></span></label>
+      </div>
+      <button class="btn" onclick="requestNotifPermission()" style="margin-top:12px;">Enable Push Notifications</button>
+    </div>
+    <div class="card">
+      <h3>🗑️ Data</h3>
+      <button class="btn-outline" onclick="clearAllData()">Clear All Data</button>
+    </div>
+  </div>
+</div>
+
+<nav>
+  <button class="active" onclick="switchTab('home',this)"><span class="icon">🏠</span>Home</button>
+  <button onclick="switchTab('log',this)"><span class="icon">🩸</span>Log</button>
+  <button onclick="switchTab('calendar',this)"><span class="icon">📅</span>Calendar</button>
+  <button onclick="switchTab('settings',this)"><span class="icon">⚙️</span>Settings</button>
+</nav>
+
+<footer>© 2026 TeaJay Konsult Ltd. All rights reserved.</footer>
+
+<script>
+const APP_URL = 'https://teajaykonsult-bloomcycle.vercel.app';
+const TIPS = [
+  "Stay hydrated — drinking enough water can reduce bloating and cramps during your period.",
+  "Tracking your cycle helps you plan better and understand your body's natural rhythm.",
+  "Light exercise like walking or yoga can ease period cramps and boost your mood.",
+  "Iron-rich foods like spinach, beans and meat help replenish iron lost during your period.",
+  "During your fertile window, your energy and mood are often at their highest — use it!",
+  "Ovulation typically occurs around day 14 of a 28-day cycle.",
+  "Dark chocolate can help ease period cravings and contains magnesium to reduce cramps.",
+  "Getting enough sleep is especially important in the days leading up to your period.",
+  "Heating pads placed on your lower abdomen can provide fast relief from period cramps.",
+  "Stress can delay or shift your cycle — take time to rest and breathe deeply.",
+  "Your skin may change throughout your cycle due to shifting hormone levels.",
+  "Keeping spare pads or tampons in your bag a week before your expected period is a smart habit.",
+  "Magnesium-rich foods like nuts and leafy greens can reduce PMS symptoms.",
+  "Your cycle is unique to you — small variations are completely normal.",
+  "Herbal teas like ginger and chamomile can soothe period discomfort naturally."
+];
+
+let currentMonth = new Date().getMonth();
+let currentYear = new Date().getFullYear();
+let deferredPrompt = null;
+
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  const fab = document.getElementById('installBtn');
+  fab.style.display = 'flex';
+  fab.onclick = async () => {
+    deferredPrompt.prompt();
+    const {outcome} = await deferredPrompt.userChoice;
+    if(outcome === 'accepted') fab.style.display = 'none';
+  };
+});
+
+const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+if(isIOS && !isStandalone) document.getElementById('iosBanner').style.display = 'flex';
+
+function getSettings(){
+  return {
+    cycleLength: parseInt(localStorage.getItem('cycleLength') || '28'),
+    periodDuration: parseInt(localStorage.getItem('periodDuration') || '5'),
+    notifPeriod: localStorage.getItem('notifPeriod') !== 'false',
+    notifFertile: localStorage.getItem('notifFertile') !== 'false',
+    notifOvulation: localStorage.getItem('notifOvulation') !== 'false'
+  };
+}
+
+function saveSetting(key, value){
+  localStorage.setItem(key, value);
+  updateDashboard();
+}
+
+function getHistory(){
+  return JSON.parse(localStorage.getItem('bloomHistory') || '[]');
+}
+
+function saveHistory(h){
+  localStorage.setItem('bloomHistory', JSON.stringify(h));
+}
+
+function logPeriod(){
+  const start = document.getElementById('startDate').value;
+  const end = document.getElementById('endDate').value;
+  if(!start){alert('Please select a start date.');return;}
+  const history = getHistory();
+  history.unshift({id:Date.now(), start, end: end || start});
+  saveHistory(history);
+  document.getElementById('startDate').value = '';
+  document.getElementById('endDate').value = '';
+  updateDashboard();
+  renderHistory();
+  renderCalendar();
+  showToast('✅ Period Logged!','Your cycle has been updated successfully.');
+}
+
+function deleteEntry(id){
+  if(!confirm('Delete this entry?')) return;
+  const h = getHistory().filter(e => e.id !== id);
+  saveHistory(h);
+  renderHistory();
+  updateDashboard();
+  renderCalendar();
+}
+
+function daysBetween(d1, d2){
+  return Math.round((d2 - d1) / 86400000);
+}
+
+function addDays(date, days){
+  const d = new Date(date);
+  d.setDate(d.getDate() + days);
+  return d;
+}
+
+function getDateStr(date){
+  return date.toISOString().split('T')[0];
+}
+
+function getPredictions(lastStart){
+  const s = getSettings();
+  const lastDate = new Date(lastStart);
+  const nextPeriod = addDays(lastDate, s.cycleLength);
+  const ovulation = addDays(lastDate, s.cycleLength - 14);
+  const fertileStart = addDays(ovulation, -5);
+  const fertileEnd = addDays(ovulation, 1);
+  return {nextPeriod, ovulation, fertileStart, fertileEnd};
+}
+
+function updateDashboard(){
+  const s = getSettings();
+  const history = getHistory();
+  const today = new Date();
+  today.setHours(0,0,0,0);
+
+  document.getElementById('cycleLength').value = s.cycleLength;
+  document.getElementById('periodDuration').value = s.periodDuration;
+  document.getElementById('notifPeriod').checked = s.notifPeriod;
+  document.getElementById('notifFertile').checked = s.notifFertile;
+  document.getElementById('notifOvulation').checked = s.notifOvulation;
+  document.getElementById('miniCycleLen').textContent = s.cycleLength;
+
+  const tipIndex = today.getDate() % TIPS.length;
+  document.getElementById('dailyTip').textContent = TIPS[tipIndex];
+
+  if(history.length === 0){
+    document.getElementById('heroStat').textContent = '--';
+    document.getElementById('heroLabel').textContent = 'Log your first period to get started';
+    document.getElementById('miniCycleDay').textContent = '-';
+    document.getElementById('miniFertile').textContent = '-';
+    document.getElementById('miniOvulation').textContent = '-';
+    document.getElementById('statusPeriod').textContent = '-';
+    document.getElementById('statusFertile').textContent = '-';
+    document.getElementById('statusOvulation').textContent = '-';
+    return;
+  }
+
+  const last = history[0];
+  const lastStart = new Date(last.start);
+  lastStart.setHours(0,0,0,0);
+  const lastEnd = new Date(last.end || last.start);
+  lastEnd.setHours(0,0,0,0);
+  const pred = getPredictions(lastStart);
+  const {nextPeriod, ovulation, fertileStart, fertileEnd} = pred;
+
+  const cycleDay = daysBetween(lastStart, today) + 1;
+  const daysToNext = daysBetween(today, nextPeriod);
+  const daysToOvulation = daysBetween(today, ovulation);
+  const daysToFertile = daysBetween(today, fertileStart);
+
+  const onPeriod = today >= lastStart && today <= addDays(lastEnd, s.periodDuration - 1);
+  const onFertile = today >= fertileStart && today <= fertileEnd;
+  const onOvulation = getDateStr(today) === getDateStr(ovulation);
+
+  document.getElementById('miniCycleDay').textContent = cycleDay > 0 ? cycleDay : '-';
+  document.getElementById('miniFertile').textContent = daysToFertile > 0 ? daysToFertile : onFertile ? '🌸' : '-';
+  document.getElementById('miniOvulation').textContent = daysToOvulation > 0 ? daysToOvulation : onOvulation ? '🥚' : '-';
+
+  if(onPeriod){
+    document.getElementById('heroStat').textContent = '🩸';
+    document.getElementById('heroLabel').textContent = 'Your period is here. Rest and take care.';
+  } else if(onOvulation){
+    document.getElementById('heroStat').textContent = '🥚';
+    document.getElementById('heroLabel').textContent = 'Today is your Ovulation Day!';
+  } else if(onFertile){
+    document.getElementById('heroStat').textContent = '🌸';
+    document.getElementById('heroLabel').textContent = 'You are in your Fertile Window';
+  } else if(daysToNext >= 0){
+    document.getElementById('heroStat').textContent = daysToNext;
+    document.getElementById('heroLabel').textContent = daysToNext === 0 ? 'Your period is expected today!' : `Day${daysToNext !== 1 ? 's' : ''} until next period`;
+  } else {
+    document.getElementById('heroStat').textContent = Math.abs(daysToNext);
+    document.getElementById('heroLabel').textContent = `Days since expected period`;
+  }
+
+  document.getElementById('statusPeriod').textContent = daysToNext > 0 ? `${daysToNext}d` : onPeriod ? 'Now' : 'Late';
+  document.getElementById('statusFertile').textContent = daysToFertile > 0 ? `${daysToFertile}d` : onFertile ? 'Now' : '-';
+  document.getElementById('statusOvulation').textContent = daysToOvulation > 0 ? `${daysToOvulation}d` : onOvulation ? 'Today' : '-';
+
+  checkNotifications(daysToNext, daysToFertile, daysToOvulation, onOvulation, s);
+}
+
+function checkNotifications(daysToNext, daysToFertile, daysToOvulation, onOvulation, s){
+  const lastNotif = localStorage.getItem('lastNotifDate');
+  const today = new Date().toDateString();
+  if(lastNotif === today) return;
+  localStorage.setItem('lastNotifDate', today);
+
+  if(s.notifPeriod && daysToNext === 3){
+    showToast('🩸 Period Approaching!','Your period is expected in 3 days. Stock up on pads or tampons now!');
+    sendPushNotification('Period Approaching 🩸','Your period is expected in 3 days. Time to prepare!');
+  } else if(s.notifFertile && daysToFertile === 1){
+    showToast('🌸 Fertile Window Starting!','Your fertile window begins tomorrow. Plan accordingly.');
+    sendPushNotification('Fertile Window Starting 🌸','Your fertile window begins tomorrow.');
+  } else if(s.notifOvulation && onOvulation){
+    showToast('🥚 Ovulation Day!','Today is your ovulation day. Your fertility is at its peak.');
+    sendPushNotification('Ovulation Day 🥚','Today is your ovulation day!');
+  }
+}
+
+function sendPushNotification(title, body){
+  if('Notification' in window && Notification.permission === 'granted'){
+    new Notification(title, {body, icon:'https://teajaykonsult-bloomcycle.vercel.app/icon-192.png'});
+  }
+}
+
+function requestNotifPermission(){
+  if(!('Notification' in window)){alert('Push notifications are not supported on this browser.');return;}
+  Notification.requestPermission().then(p => {
+    if(p === 'granted'){showToast('✅ Notifications Enabled!','You will now receive period and ovulation reminders.');}
+    else{alert('Notification permission was denied. Please enable it from your browser settings.');}
+  });
+}
+
+function showToast(title, body){
+  const t = document.getElementById('notifToast');
+  document.getElementById('notifTitle').textContent = title;
+  document.getElementById('notifBody').textContent = body;
+  t.style.display = 'block';
+  setTimeout(() => t.style.display = 'none', 4000);
+}
+
+function renderHistory(){
+  const history = getHistory();
+  const container = document.getElementById('historyList');
+  if(history.length === 0){
+    container.innerHTML = '<div class="empty-state"><div class="e-icon">🌸</div><p>No periods logged yet</p></div>';
+    return;
+  }
+  container.innerHTML = history.map(e => {
+    const start = new Date(e.start);
+    const end = new Date(e.end || e.start);
+    const dur = daysBetween(start, end) + 1;
+    return `<div class="history-item">
+      <div>
+        <div class="h-info">🩸 ${start.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}</div>
+        <div class="h-dur">Duration: ${dur} day${dur !== 1 ? 's' : ''}</div>
+      </div>
+      <button class="del-btn" onclick="deleteEntry(${e.id})">Delete</button>
+    </div>`;
+  }).join('');
+}
+
+function renderCalendar(){
+  const history = getHistory();
+  const s = getSettings();
+  const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('monthLabel').textContent = `${monthNames[currentMonth]} ${currentYear}`;
+
+  const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+  const today = new Date();
+  today.setHours(0,0,0,0);
+
+  let periodDays = new Set();
+  let fertileDays = new Set();
+  let ovulationDays = new Set();
+
+  history.forEach(e => {
+    const start = new Date(e.start);
+    const end = new Date(e.end || e.start);
+    for(let d = new Date(start); d <= end; d = addDays(d, 1)){
+      periodDays.add(getDateStr(d));
+    }
+    const pred = getPredictions(start);
+    const {nextPeriod, ovulation, fertileStart, fertileEnd} = pred;
+    for(let fd = new Date(fertileStart); fd <= fertileEnd; fd = addDays(fd, 1)){
+      fertileDays.add(getDateStr(fd));
+    }
+    ovulationDays.add(getDateStr(ovulation));
+    for(let np = new Date(nextPeriod); np <= addDays(nextPeriod, s.periodDuration - 1); np = addDays(np, 1)){
+      periodDays.add(getDateStr(np));
+    }
+    const pred2 = getPredictions(nextPeriod);
+    for(let fd = new Date(pred2.fertileStart); fd <= pred2.fertileEnd; fd = addDays(fd, 1)){
+      fertileDays.add(getDateStr(fd));
+    }
+    ovulationDays.add(getDateStr(pred2.ovulation));
+  });
+
+  let html = '';
+  for(let i = 0; i < firstDay; i++) html += '<div class="cal-day empty"></div>';
+  for(let d = 1; d <= daysInMonth; d++){
+    const dateStr = `${currentYear}-${String(currentMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isToday = new Date(dateStr).getTime() === today.getTime();
+    let cls = 'cal-day';
+    if(ovulationDays.has(dateStr)) cls += ' ovulation-day';
+    else if(fertileDays.has(dateStr)) cls += ' fertile-day';
+    else if(periodDays.has(dateStr)) cls += ' period-day';
+    if(isToday) cls += ' today';
+    html += `<div class="${cls}">${d}</div>`;
+  }
+  document.getElementById('calendarGrid').innerHTML = html;
+}
+
+function changeMonth(dir){
+  currentMonth += dir;
+  if(currentMonth > 11){currentMonth = 0; currentYear++;}
+  if(currentMonth < 0){currentMonth = 11; currentYear--;}
+  renderCalendar();
+}
+
+function switchTab(name, btn){
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  btn.classList.add('active');
+  if(name === 'calendar') renderCalendar();
+  if(name === 'log') renderHistory();
+}
+
+function shareApp(platform){
+  const msg = encodeURIComponent(`🌸 I use BloomCycle to track my period, fertile window and ovulation! It's free and easy to use. Try it here: ${APP_URL}`);
+  const urls = {
+    whatsapp: `https://wa.me/?text=${msg}`,
+    facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(APP_URL)}`,
+    x: `https://x.com/intent/tweet?text=${msg}`
+  };
+  window.open(urls[platform], '_blank');
+}
+
+function clearAllData(){
+  if(confirm('This will delete all your cycle data. This cannot be undone. Continue?')){
+    localStorage.removeItem('bloomHistory');
+    localStorage.removeItem('lastNotifDate');
+    updateDashboard();
+    renderHistory();
+    renderCalendar();
+    showToast('🗑️ Data Cleared','All your cycle data has been removed.');
+  }
+}
+
+updateDashboard();
+renderCalendar();
+renderHistory();
+</script>
+</body>
+</html>
