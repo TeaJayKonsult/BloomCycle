@@ -1,0 +1,29 @@
+
+{
+  "name": "BloomCycle - Period & Ovulation Tracker",
+  "short_name": "BloomCycle",
+  "description": "Track your period, fertile window and ovulation with ease. Your cycle, your power.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fdf6fb",
+  "theme_color": "#c2185b",
+  "orientation": "portrait",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["health", "lifestyle", "medical"],
+  "lang": "en",
+  "dir": "ltr"
+}
